@@ -188,5 +188,3 @@ interface State {
 };
   
   export default App;
-  
-  

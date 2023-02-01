@@ -51,7 +51,7 @@ const SearchInput = styled.input`
         background-position: 100% center;
     }
 `;
-
+  
   const Search: React.FC<Props> = ({ submit }) => {
     return (
       <Formik
