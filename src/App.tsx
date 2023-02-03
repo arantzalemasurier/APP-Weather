@@ -111,18 +111,26 @@ interface State {
             pressure: data.list[0].pressure,
           };
   
-          const weekData = data.list;
-          const weekInfo = weekData.map((data: {
-            list: any; weather: {
-              description: any;
-              main: any; icon: any; 
-            }[]; 
-            dt: number; 
-            temp: { 
-                max: number; 
-                min: number; 
-            }; 
-        }, index: any) => {
+          interface Weather {
+            description: string;
+            main: string;
+            icon: string;
+          }
+          
+          interface Temp {
+            max: number;
+            min: number;
+          }
+          
+          interface DayData {
+            list: object[];
+            weather: Weather[];
+            dt: number;
+            temp: Temp;
+          }
+          
+          const weekData = data.list as DayData[];
+          const weekInfo = weekData.map((data, index) => {
             return {
               key: index,
               main: data.weather[0].main.toUpperCase(),
@@ -138,7 +146,7 @@ interface State {
               lTemp: Math.floor(data.temp.min),
             };
           });
-  
+          
           setState({
             ...state,
             current,
