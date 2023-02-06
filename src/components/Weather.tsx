@@ -6,8 +6,8 @@ import Weekly from './Weekly';
 import styled from "styled-components";
 
 interface WeatherProps {
-    today: any,
-    weekly: any
+  today: any,
+  weekly: any
 }
 
 const Root = styled.div`
@@ -17,11 +17,8 @@ const Root = styled.div`
   padding: 15px;
 `;
 
-const Card = styled.div`
+const WeatherCard = styled.div`
   padding: 20px;
-`;
-
-const Section = styled(Card)`
   height: 100%;
   padding-top: 5px;
   background-color: rgba(5, 4, 2, 0.1);
@@ -32,19 +29,19 @@ const Weather: React.FC<WeatherProps> = ({ today, weekly }) => {
     <Root>
       <Grid container spacing={5}>
         <Grid item xs={12} sm={6}>
-          <Section>
+          <WeatherCard>
             <LocalInfo today={today} />
-          </Section>
+          </WeatherCard>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Section>
+          <WeatherCard>
             <Today today={today} />
-          </Section>
+          </WeatherCard>
         </Grid>
         <Grid item xs={12}>
-          <Section>
+          <WeatherCard>
             <Weekly weekData={weekly} />
-          </Section>
+          </WeatherCard>
         </Grid>
       </Grid>
     </Root>
