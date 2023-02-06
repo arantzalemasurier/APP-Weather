@@ -1,8 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 
+interface WeatherData {
+  day: string;
+  icon: string;
+  key: number;
+  lTemp: number;
+  hTemp: number;
+  main: string;
+  desc: string;
+}
+
 interface Props {
-  weekData: any[];
+  weekData: WeatherData[];
 }
 
 const Root = styled.div`
@@ -30,9 +40,7 @@ const ImageListItem = styled.li`
 const WeatherIcon = styled.img`
   width: 62px;
   height: 62px;
-  top: 0;
   transform: translateY(0%);
-  left: 0;
 `;
 
 const Info = styled.p`
@@ -40,32 +48,25 @@ const Info = styled.p`
   font-weight: bold;
 `;
 
-const Title = styled(Info)`
+const Title = styled.p`
   text-align: center;
+  font-size: 17px;
+  font-weight: bold;
 `;
 
-const Subtitle1 = styled.p`
+const Subtitle = styled.p`
   padding-bottom: 10px;
   font-size: 18px;
   font-weight: inherit;
-`;
-
-const Subtitle2 = styled(Subtitle1)`
-  color: #bb0043;
-  font-size: 21px;
 `;
 
 const Weekly: React.FC<Props> = ({ weekData }) => {
   return (
     <Root>
       <ImageList>
-        {weekData.map((data) => (
-          <ImageListItem key={data.key}>
-            {data.key === 0 ? (
-              <Title>Hoy</Title>
-            ) : (
-              <Title>{data.day}</Title>
-            )}
+        {weekData.map((data, index) => (
+          <ImageListItem key={index}>
+            <Title>{index === 0 ? 'Hoy' : data.day}</Title>
             <WeatherIcon
               src={`https://openweathermap.org/img/w/${data.icon}.png`}
               alt={data.icon}
@@ -73,8 +74,10 @@ const Weekly: React.FC<Props> = ({ weekData }) => {
             <Info>
               {data.lTemp}°C - {data.hTemp}°C
             </Info>
-            <Subtitle1>{data.main}</Subtitle1>
-            <Subtitle2>{data.desc}</Subtitle2>
+            <Subtitle>{data.main}</Subtitle>
+            <Subtitle style={{ color: '#bb0043', fontSize: 21 }}>
+              {data.desc}
+            </Subtitle>
           </ImageListItem>
         ))}
       </ImageList>
