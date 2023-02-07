@@ -23,9 +23,17 @@ const Main = styled.div`
   padding: 5px;
 `;
 
-const Text = styled.div`
-  text-align: center;
-  width: 50%;
+const Left = styled.div`
+  width:50%
+`;
+
+const Right = styled.div`
+  width:50%;
+  text-align: right;
+`;
+
+const Bottom = styled.div`
+  text-align: left;
 `;
 
 const WeatherIcon = styled.img`
@@ -47,7 +55,7 @@ const Today: React.FC<TodayProps> = ({ today }) => {
   return (
     <CardContent>
       <Main>
-        <Text>
+        <Left>
           <WeatherIcon src={`https://openweathermap.org/img/w/${today.icon}.png`} alt={today.icon} />
           <Typography variant="h3" gutterBottom>
             {today.temp}°C
@@ -55,24 +63,24 @@ const Today: React.FC<TodayProps> = ({ today }) => {
           <Typography variant="h6" gutterBottom>
             {today.main}, {today.desc}
           </Typography>
-        </Text>
-        <Text>
+        </Left>
+        <Right>
           <Typography variant="h6" gutterBottom>
             <UnitIcon src={'http://openweathermap.org/img/wn/01d@2x.png'} alt="Logo" /> {today.sunrise} A.M.
           </Typography>
           <Typography variant="h6" gutterBottom>
             <UnitIcon src={`http://openweathermap.org/img/wn/01n@2x.png`} alt="Logo" /> {today.sunset} P.M.
           </Typography>
-        </Text>
+        </Right>
       </Main>
-      <div>
+      <Bottom>
         <UnitIcon1 src={`http://openweathermap.org/img/wn/50d@2x.png`} alt="Logo" />
         <span>{today.pressure} hPa</span>
         <UnitIcon src={`http://openweathermap.org/img/wn/13d@2x.png`} alt="Logo" />
         <span>{today.humidity} %</span>
         <UnitIcon src={`http://openweathermap.org/img/wn/03d@2x.png`} alt="Logo" />
         <span>{today.wind} m/s N</span>
-      </div>
+      </Bottom>
     </CardContent>
   );
 };
