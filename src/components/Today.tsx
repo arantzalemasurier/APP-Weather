@@ -69,16 +69,16 @@ const Today: React.FC<TodayProps> = ({ today }) => {
             <UnitIcon src={'http://openweathermap.org/img/wn/01d@2x.png'} alt="Logo" /> {today.sunrise} A.M.
           </Typography>
           <Typography variant="h6" gutterBottom>
-            <UnitIcon src={`http://openweathermap.org/img/wn/01n@2x.png`} alt="Logo" /> {today.sunset} P.M.
+            <UnitIcon src={'http://openweathermap.org/img/wn/01n@2x.png'} alt="Logo" /> {today.sunset} P.M.
           </Typography>
         </Right>
       </Main>
       <Bottom>
-        <UnitIcon1 src={`http://openweathermap.org/img/wn/50d@2x.png`} alt="Logo" />
+        <UnitIcon1 src={'http://openweathermap.org/img/wn/50d@2x.png'} alt="Logo" />
         <span>{today.pressure} hPa</span>
-        <UnitIcon src={`http://openweathermap.org/img/wn/13d@2x.png`} alt="Logo" />
+        <UnitIcon src={'http://openweathermap.org/img/wn/13d@2x.png'} alt="Logo" />
         <span>{today.humidity} %</span>
-        <UnitIcon src={`http://openweathermap.org/img/wn/03d@2x.png`} alt="Logo" />
+        <UnitIcon src={'http://openweathermap.org/img/wn/03d@2x.png'} alt="Logo" />
         <span>{today.wind} m/s N</span>
       </Bottom>
     </CardContent>
