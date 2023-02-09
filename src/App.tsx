@@ -5,6 +5,9 @@ import Search from './components/Search';
 import {weatherForecast} from './Api'
 import Weather from './components/Weather';
 import Loader from './components/Loader';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Kanban from './components/kanban';
+
 
 interface State {
     value: string;
@@ -168,31 +171,46 @@ interface State {
         });
     };
     
+    
     return (
-      <>
-        <Search
-          value={state.value}
-          showResult={state.weekInfo.length > 0 || state.error}
-          change={handleInputChange}
-          submit={(value) => handleSearchCity(value)}
-        />
-        {state.loading === true ? (
-          <Loader />
-        ) : (
-          <div>
-            {state.current.country !== undefined ? (
-              <div className="weather">
-                <Weather today={state.current} weekly={state.weekInfo} />
-              </div>
-            ) : state.error ? (
-              <p className="error__loc">
-              ¡Perdón! no tenemos ninguna información sobre la ubicación especificada
-            </p>
-          ) : null}
-        </div>
-      )}
-    </>
-  );
-};
-  
-export default App;
+      <BrowserRouter>
+        <Routes>
+          <Route path="/weather" element={
+            <div className="weather">
+              <Weather today={state.current} weekly={state.weekInfo} />
+            </div>
+          } />
+          <Route path="/" element={
+            <>
+              <Search
+                value={state.value}
+                showResult={state.weekInfo.length > 0 || state.error}
+                change={handleInputChange}
+                submit={(value) => handleSearchCity(value)}
+              />
+              {state.loading === true ? (
+                <Loader />
+              ) : (
+                <div>
+                  {state.current.country !== undefined ? (
+                    <div className="weather">
+                      <Weather today={state.current} weekly={state.weekInfo} />
+                    </div>
+                  ) : state.error ? (
+                    <p className="error__loc">
+                      ¡Perdón! no tenemos ninguna información sobre la ubicación especificada
+                    </p>
+                  ) : null}
+                </div>
+              )}
+            </>
+          } />
+          <Route path="/kanban" element={<Kanban />} />
+        </Routes>
+      </BrowserRouter>
+    );
+    }
+    
+    export default App;
+    
+    

@@ -24,16 +24,23 @@ const WeatherCard = styled.div`
   background-color: rgba(5, 4, 2, 0.1);
 `;
 
-const Weather: React.FC<WeatherProps> = ({ today, weekly }) => {
+  const Weather: React.FC<WeatherProps> = ({ today, weekly }) => {
+    const handleClick = () => {
+      window.location.href = '/kanban';
+  };
   return (
     <Root>
+      
       <Grid container spacing={5}>
         <Grid item xs={12} sm={6}>
           <WeatherCard>
             <LocalInfo today={today} />
-          </WeatherCard>
-        </Grid>
-        <Grid item xs={12} sm={6}>
+              <div>
+                <button onClick={handleClick}>Ir a Kanban</button>
+              </div>
+          </WeatherCard> 
+        </Grid>  
+        <Grid item xs={12} sm={6}>   
           <WeatherCard>
             <Today today={today} />
           </WeatherCard>
