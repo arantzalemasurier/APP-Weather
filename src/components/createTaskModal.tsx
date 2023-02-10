@@ -6,16 +6,17 @@ import './modal.css';
 interface Props {
   show: boolean;
   onClose: () => void;
-  onSubmit: (name: string, description: string) => void;
+  onSubmit: (name: string, description: string, dueDate: string) => void;
 }
 
 const CreateTaskModal: React.FC<Props> = ({ show, onClose, onSubmit }) => {
   const [name, setName] = React.useState("");
   const [description, setDescription] = React.useState("");
+  const [dueDate, setDueDate] = React.useState("");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onSubmit(name, description);
+    onSubmit(name, description, dueDate);
   };
 
   return (
@@ -37,6 +38,14 @@ const CreateTaskModal: React.FC<Props> = ({ show, onClose, onSubmit }) => {
             rows={10} 
           />
         </div>
+        <div className="input-container">
+          <label>Fecha de Vencimiento:</label>
+          <input
+            type="date"
+            value={dueDate}
+            onChange={(e) => setDueDate(e.target.value)}
+          />
+        </div>
         <div className="buttons">
           <button onClick={onClose}>Cancelar</button>
           <button type="submit">Agregar tarea</button>
@@ -44,10 +53,6 @@ const CreateTaskModal: React.FC<Props> = ({ show, onClose, onSubmit }) => {
       </form>
     </div>
   );
-  
-  
 };
 
 export default CreateTaskModal;
-
-

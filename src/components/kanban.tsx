@@ -8,6 +8,7 @@ interface Task {
   name: string;
   description: string;
   checked: boolean;
+  dueDate?: Date;
 }
 
 const Kanban = () => {
@@ -39,32 +40,32 @@ const Kanban = () => {
   //const [selectedTask, setSelectedTask] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
 
-const addTask = (name: string, description: string) => {
-  setBoards(boards => {
-    let nextTaskNumber = 1;
-    for (const board of boards) {
-      nextTaskNumber += board.tasks.length;
-    }
-    return boards.map(board => {
-      if (board.name === "To Do") {
-        return {
-          ...board,
-          tasks: [
-            ...board.tasks,
-            {
-              name: `Task ${nextTaskNumber}`,
-              description: description,
-              checked: false,
-            },
-          ],
-        };
+  const addTask = (name: string, description: string, dueDate?: Date) => {
+    setBoards(boards => {
+      let nextTaskNumber = 1;
+      for (const board of boards) {
+        nextTaskNumber += board.tasks.length;
       }
-      return board;
+      return boards.map(board => {
+        if (board.name === "To Do") {
+          return {
+            ...board,
+            tasks: [
+              ...board.tasks,
+              {
+                name: `Task ${nextTaskNumber}`,
+                description: description,
+                checked: false,
+                dueDate: dueDate
+              },
+            ],
+          };
+        }
+        return board;
+      });
     });
-  });
-  setNewTaskDescription("");
-  setShowForm(false);
-};
+  };
+  
 
 
   const toggleChecked = (task: Task) => {
