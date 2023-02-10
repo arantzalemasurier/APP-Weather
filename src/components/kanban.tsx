@@ -145,7 +145,7 @@ const moveTaskToInProgress = () => {
 return (
   <div className="kanban-container">
     <div className="header">
-      <h2>Kanban Board</h2>
+      <h2>KANBAN BOARD</h2>
     </div>
     <div className="boards">
       {boards.map((board, index) => (
