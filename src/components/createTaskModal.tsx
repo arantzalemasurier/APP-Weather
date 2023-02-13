@@ -16,6 +16,9 @@ const CreateTaskModal: React.FC<Props> = ({ show, onClose, onSubmit }) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     onSubmit(name, description, dueDate, assignedTo);
+    setTimeout(() => {
+      onClose();
+    }, 0);
   };
 
   return (

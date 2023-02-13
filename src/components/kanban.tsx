@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./kanban.css";
-import Button from "@material-ui/core/Button";
 import CreateTaskModal from './createTaskModal';
 
 interface Task {
@@ -57,29 +56,23 @@ const Kanban = () => {
       id: boards[0].tasks.length + 1
     };
     setBoards(boards => {
-      let nextTaskNumber = 1;
-      for (const board of boards) {
-        nextTaskNumber += board.tasks.length;
-      }
-      return boards.map(board => {
-        if (board.name === "To Do") {
-          return {
-            ...board,
-            tasks: [
-              ...board.tasks,
-              {
-                id: nextTaskNumber,
-                name: `Task ${nextTaskNumber}`,
-                description: description,
-                checked: false,
-                dueDate: dueDate,
-                assignedTo: assignedTo
-              },
-            ],
-          };
-        }
-        return board;
-      });
+      return [
+        {
+          ...boards[0],
+          tasks: [
+            ...boards[0].tasks,
+            {
+              id: newTask.id,
+              name,
+              description,
+              checked: false,
+              dueDate,
+              assignedTo,
+            },
+          ],
+        },
+        ...boards.slice(1),
+      ];
     });
   };
 
@@ -163,7 +156,7 @@ const moveTaskToInProgress = () => {
 return (
   <div className="kanban-container">
     <div className="header">
-      <h2>KANBAN BOARD</h2>
+      <h2>TABLERO KANBAN</h2>
     </div>
     <div className="boards">
       {boards.map((board, index) => (
@@ -204,7 +197,7 @@ return (
   )}
     <div className="buttons-container">
       <button className="create-button" onClick={() => setShowForm(!showForm)}>Crear tarea</button>
-      <button className="delete-button" onClick={deleteChecked}>Borrar tareas marcadas</button>
+      <button className="delete-button" onClick={deleteChecked}>Borrar tarea</button>
     </div>
   </div>
 );
