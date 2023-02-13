@@ -3,12 +3,18 @@ import "./kanban.css";
 import Button from "@material-ui/core/Button";
 import CreateTaskModal from './createTaskModal';
 
-
 interface Task {
   name: string;
   description: string;
   checked: boolean;
-  dueDate?: Date;
+  assignedTo: string;
+  dueDate: string;
+  id: number;
+}
+
+interface Board {
+  name: string;
+  tasks: Task[];
 }
 
 const Kanban = () => {
@@ -16,31 +22,40 @@ const Kanban = () => {
     {
       name: "To Do",
       tasks: [
-        { name: "Tarea 1", description: "Esta es la descripción de la tarea 1", checked: false },
-        { name: "Tarea 2", description: "Esta es la descripción de la tarea 2", checked: false},
+        { name: "Tarea 1", description: "Esta es la descripción de la tarea 1", checked: false, assignedTo: "Juan", dueDate: "2022-12-01", id: 1 },
+        { name: "Tarea 2", description: "Esta es la descripción de la tarea 2", checked: false, assignedTo: "Maria", dueDate: "2022-11-30", id: 2},
       ],
     },
     {
       name: "In Progress",
       tasks: [
-        { name: "Tarea 3", description: "Esta es la descripción de la tarea 3", checked: false },
+        { name: "Tarea 3", description: "Esta es la descripción de la tarea 3", checked: false, assignedTo: "Juan", dueDate: "2022-12-01", id: 3 },
       ],
     },
     {
       name: "Done",
       tasks: [
-        { name: "Tarea 4", description: "Esta es la descripción de la tarea 4", checked: false },
-        { name: "Tarea 5", description: "Esta es la descripción de la tarea 5", checked: false },
+        { name: "Tarea 4", description: "Esta es la descripción de la tarea 4", checked: false, assignedTo: "Juan", dueDate: "2022-12-01", id: 4 },
+        { name: "Tarea 5", description: "Esta es la descripción de la tarea 5", checked: false, assignedTo: "Juan", dueDate: "2022-12-01", id: 5 },
       ],
     },
   ]);
+
   const [newTaskName, setNewTaskName] = useState("");
   const [newTaskDescription, setNewTaskDescription] = useState("");
-
-  //const [selectedTask, setSelectedTask] = useState<number | null>(null);
+  const [dueDate, setDueDate] = useState("");
+  const [assignedTo, setAssignedTo] = useState("");
   const [showForm, setShowForm] = useState(false);
 
-  const addTask = (name: string, description: string, dueDate?: Date) => {
+  const addTask = (name: string, description: string, dueDate: string, assignedTo: string) => {
+    const newTask = {
+      name,
+      description,
+      checked: false,
+      assignedTo: "Nadie",
+      dueDate: "Ninguna",
+      id: boards[0].tasks.length + 1
+    };
     setBoards(boards => {
       let nextTaskNumber = 1;
       for (const board of boards) {
@@ -53,10 +68,12 @@ const Kanban = () => {
             tasks: [
               ...board.tasks,
               {
+                id: nextTaskNumber,
                 name: `Task ${nextTaskNumber}`,
                 description: description,
                 checked: false,
-                dueDate: dueDate
+                dueDate: dueDate,
+                assignedTo: assignedTo
               },
             ],
           };
@@ -65,21 +82,25 @@ const Kanban = () => {
       });
     });
   };
+
   
 
-
-  const toggleChecked = (task: Task) => {
-    setBoards(boards =>
-      boards.map(board => {
-        const tasks = board.tasks.map(bTask =>
-          bTask === task ? { ...bTask, checked: !bTask.checked } : bTask
-        );
-        return { ...board, tasks };
-      })
+  const isEqual = (a: Task, b: Task) => {
+    return a.id === b.id;
+  };
+  
+  
+  const toggleChecked = (id: number) => {
+    setBoards(
+      boards.map(board => ({
+        ...board,
+        tasks: board.tasks.map(task =>
+          task.id === id ? { ...task, checked: !task.checked } : task
+        )
+      }))
     );
   };
 
-  
 
   const deleteChecked = () => {
     setBoards((boards) =>
@@ -95,17 +116,17 @@ const Kanban = () => {
       const inProgressIndex = boards.findIndex(board => board.name === "In Progress");
       const doneIndex = boards.findIndex(board => board.name === "Done");
       const inProgressTasks = [...boards[inProgressIndex].tasks];
-      const taskIndex = inProgressTasks.indexOf(task);
-
+      const taskIndex = inProgressTasks.findIndex(bTask => isEqual(bTask, task));
+  
       if (taskIndex === -1) {
         return boards;
       }
-
+  
       inProgressTasks.splice(taskIndex, 1);
       const doneTasks = [...boards[doneIndex].tasks, {...task, checked: false}];
       const updatedInProgress = { ...boards[inProgressIndex], tasks: inProgressTasks };
       const updatedDone = { ...boards[doneIndex], tasks: doneTasks };
-
+  
       return boards
         .slice(0, inProgressIndex)
         .concat([updatedInProgress])
@@ -113,8 +134,7 @@ const Kanban = () => {
         .concat([updatedDone])
         .concat(boards.slice(doneIndex + 1));
     });
-};
-
+  };
 
 const moveTaskToInProgress = () => {
   setBoards(boards => {
@@ -139,9 +159,6 @@ const moveTaskToInProgress = () => {
     });
   });
 };
-
-
-
   
 return (
   <div className="kanban-container">
@@ -155,19 +172,24 @@ return (
           <div className="tasks">
             {board.tasks.map((task, taskIndex) => (
               <div className="task" key={taskIndex}>
-                <input
-                  type="checkbox"
-                  checked={task.checked}
-                  onChange={() => toggleChecked(task)}
-                />
-                <h4>{task.name}</h4>
-                <p>{task.description}</p>
-                {board.name === "To Do" && (
-                  <button onClick={() => moveTaskToInProgress()}>En Progreso</button>                )}
-                {board.name === "In Progress" && (
-                  <button onClick={() => moveTask(task)}>Realizada</button>
-                )}
-              </div>
+              <input
+                type="checkbox"
+                checked={task.checked}
+                onChange={() => toggleChecked(task.id)}
+              />
+              <h4>{task.name}</h4>
+              <p>{task.description}</p>
+              <p><b>Asignado a:</b> {task.assignedTo}</p>
+              <p><b>Fecha de vencimiento:</b> {task.dueDate}</p>
+              <div className="task-buttons">
+              {board.name === "To Do" && (
+                <button onClick={() => moveTaskToInProgress()}>En Progreso</button>
+              )}
+              {board.name === "In Progress" && (
+                <button onClick={() => moveTask(task)}>Realizada</button>
+              )}
+            </div>
+            </div>
             ))}
           </div>
         </div>
@@ -177,7 +199,7 @@ return (
       <CreateTaskModal 
       show={showForm} 
       onClose={() => setShowForm(false)} 
-      onSubmit={(name, description) => addTask(name, description)} 
+      onSubmit={(name, description, dueDate, assignedTo) => addTask(name, description, dueDate, assignedTo)} 
       />
   )}
     <div className="buttons-container">
