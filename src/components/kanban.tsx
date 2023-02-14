@@ -11,11 +11,6 @@ interface Task {
   id: number;
 }
 
-interface Board {
-  name: string;
-  tasks: Task[];
-}
-
 const Kanban = () => {
   const [boards, setBoards] = useState([
     {
@@ -40,10 +35,6 @@ const Kanban = () => {
     },
   ]);
 
-  const [newTaskName, setNewTaskName] = useState("");
-  const [newTaskDescription, setNewTaskDescription] = useState("");
-  const [dueDate, setDueDate] = useState("");
-  const [assignedTo, setAssignedTo] = useState("");
   const [showForm, setShowForm] = useState(false);
 
   const addTask = (name: string, description: string, dueDate: string, assignedTo: string) => {
