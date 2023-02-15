@@ -1,4 +1,3 @@
-// components/SearchContainer.tsx
 import styled from 'styled-components';
 
 const SearchContainer = styled.form`
